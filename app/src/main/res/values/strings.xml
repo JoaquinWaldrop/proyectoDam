@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">BachApp</string>
+
+    <string name="bachApp">BachApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signup">Sign Up</string>
+    <string name="login">Login</string>
+    <string name="title_activity_signup">Sign Up</string>
+
+    <string name="registro">Registrate!</string>
+    <string name="cliente">Cliente</string>
+    <string name="bachaquero">Bachaquero</string>
+    <string name="registrar">Registrar</string>
+</resources>
