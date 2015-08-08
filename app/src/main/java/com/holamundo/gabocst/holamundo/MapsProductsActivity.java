@@ -119,7 +119,7 @@ public class MapsProductsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        Toast.makeText(MapsProductsActivity.this, latitude.toString() + longitude.toString(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(MapsProductsActivity.this, latitude.toString() + longitude.toString(), Toast.LENGTH_LONG).show();
         for(int i =0 ; i< latitude.size(); i++){
             double lat = parseDouble(latitude.get(i));
             double lon = parseDouble(longitude.get(i));

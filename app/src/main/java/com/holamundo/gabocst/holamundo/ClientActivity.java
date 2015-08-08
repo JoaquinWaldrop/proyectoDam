@@ -124,7 +124,8 @@ public class ClientActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent s = new Intent(ClientActivity.this, Settings.class);
+            startActivity(s);
         }
         if (id == R.id.action_search) {
             busqueda.setVisibility(View.VISIBLE);
@@ -133,7 +134,6 @@ public class ClientActivity extends AppCompatActivity {
             Intent i = new Intent(ClientActivity.this, MapsProductsActivity.class);
             startActivity(i);
         }
-
 
         return super.onOptionsItemSelected(item);
     }

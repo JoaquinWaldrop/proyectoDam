@@ -24,4 +24,9 @@
     <string name="action_search">Buscar</string>
     <string name="title_activity_maps_products">Ubicacion de Productos</string>
     <string name="action_map">Mapa</string>
+    <string name="title_activity_settings">Configuraciones</string>
+    <string name="new_password">New Password</string>
+    <string name="confirmation">Repeat new password</string>
+    <string name="guardar">Guardar cambios</string>
+
 </resources>
