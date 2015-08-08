@@ -16,6 +16,9 @@ import com.loopj.android.http.*;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
+import org.json.JSONObject;
+
+import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -87,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 String resultado= new String(responseBody);
                 sqlSesion(resultado);
-                Toast.makeText(MainActivity.this, "Todo OK: " + resultado, Toast.LENGTH_SHORT).show();
 
             }
             @Override
@@ -100,17 +102,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void sqlSesion(String resultado){
         try {
-            JSONArray json = new JSONArray(resultado);
-            String token = json.getJSONObject(0).getString("token");
+            JSONObject json = new JSONObject(resultado);
+
+            int user = parseInt(json.getJSONArray("user").toString());
+            int userType = parseInt(json.getJSONArray("userType").toString());
+            String token = json.getJSONArray("token").toString();
+
+            /*String token = json.getJSONObject(0).getString("token");
             int user = json.getJSONObject(0).getInt("user");
-            int userType = json.getJSONObject(0).getInt("userType");
+            int userType = json.getJSONObject(0).getInt("userType");*/
 
             SessionSQL log = new SessionSQL(this, "MiDB",null, 1 );
             SQLiteDatabase db = log.getWritableDatabase();
             if(db!=null){
             String sql = "INSERT INTO sesion(token, user, userType) values" +
                     "( '" + token + " '," + user + ", " + userType +" ) ";
+                db.execSQL(sql);
+                db.close();
             }
+            Toast.makeText(MainActivity.this, "Todo OK: " + token, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, DashboardActivity.class);
             startActivity(intent);
 
