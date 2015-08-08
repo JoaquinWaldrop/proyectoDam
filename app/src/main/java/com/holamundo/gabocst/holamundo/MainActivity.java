@@ -1,6 +1,7 @@
 package com.holamundo.gabocst.holamundo;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.loopj.android.http.*;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -65,11 +71,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.login:
-
-                Toast toast = Toast.makeText(this, email.getText()+" "+password.getText(), Toast.LENGTH_SHORT);
-                toast.show();
+                postSesion(email.getText().toString(), password.getText().toString());
             default:
                 break;
         }
     }
+
+    public void postSesion(String Email, String Password){
+        AsyncHttpClient client = new AsyncHttpClient();
+        String url = "http://inworknet.net:8000/api/sessions?";
+        String parametros ="email=" + Email + "&password=" + Password;
+        client.post(url + parametros, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                String resultado= new String(responseBody);
+                sqlSesion(resultado);
+                Toast.makeText(MainActivity.this, "Todo OK: " + resultado, Toast.LENGTH_SHORT).show();
+
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String resultado= new String(responseBody);
+                Toast.makeText(MainActivity.this, "Mal: " + resultado, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void sqlSesion(String resultado){
+        try {
+            JSONArray json = new JSONArray(resultado);
+            String token = json.getJSONObject(0).getString("token");
+            int user = json.getJSONObject(0).getInt("user");
+            int userType = json.getJSONObject(0).getInt("userType");
+
+            SessionSQL log = new SessionSQL(this, "MiDB",null, 1 );
+            SQLiteDatabase db = log.getWritableDatabase();
+            if(db!=null){
+            String sql = "INSERT INTO sesion(token, user, userType) values" +
+                    "( '" + token + " '," + user + ", " + userType +" ) ";
+            }
+            Intent intent = new Intent(this, DashboardActivity.class);
+            startActivity(intent);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 }

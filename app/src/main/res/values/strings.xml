@@ -13,4 +13,8 @@
     <string name="cliente">Cliente</string>
     <string name="bachaquero">Bachaquero</string>
     <string name="registrar">Registrar</string>
+    <string name="title_activity_dashboard">Inicio</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="radio">Hello world!</string>
 </resources>
