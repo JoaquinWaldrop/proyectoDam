@@ -17,4 +17,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="radio">Hello world!</string>
+    <string name="title_activity_client">BachApp</string>
+    <string name="action_listar">Listar</string>
 </resources>

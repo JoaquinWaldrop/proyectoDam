@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         email = (EditText) findViewById(R.id.email);
         password = (EditText) findViewById(R.id.password);
         login = (Button) findViewById(R.id.login);
         signup = (TextView) findViewById(R.id.signup);
-
         login.setOnClickListener(this);
         signup.setOnClickListener(this);
 
@@ -115,9 +115,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 db.execSQL(sql);
                 db.close();
             }
-            Toast.makeText(MainActivity.this, "Todo OK: " + token, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, DashboardActivity.class);
-            startActivity(intent);
+            if(userType==0){
+                Intent intent = new Intent(this, ClientActivity.class);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(this, DashboardActivity.class);
+                startActivity(intent);
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();

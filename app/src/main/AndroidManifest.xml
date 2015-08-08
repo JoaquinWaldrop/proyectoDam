@@ -36,6 +36,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.holamundo.gabocst.holamundo.MainActivity" />
         </activity>
+        <activity
+            android:name=".ClientActivity"
+            android:label="@string/title_activity_client"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.holamundo.gabocst.holamundo.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
