@@ -21,4 +21,7 @@
     <string name="action_listar">Listar</string>
     <string name="title_activity_product">Producto</string>
     <string name="busqueda">Buscar...</string>
+    <string name="action_search">Buscar</string>
+    <string name="title_activity_maps_products">Ubicacion de Productos</string>
+    <string name="action_map">Mapa</string>
 </resources>

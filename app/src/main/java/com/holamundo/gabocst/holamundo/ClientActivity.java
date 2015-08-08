@@ -8,6 +8,7 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ public class ClientActivity extends AppCompatActivity {
 
         lista = (ListView) findViewById(R.id.listProducts);
         busqueda = (EditText) findViewById(R.id.busqueda);
+
 
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -123,6 +125,13 @@ public class ClientActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_search) {
+            busqueda.setVisibility(View.VISIBLE);
+        }
+        if (id == R.id.action_map) {
+            Intent i = new Intent(ClientActivity.this, MapsProductsActivity.class);
+            startActivity(i);
         }
 
 
