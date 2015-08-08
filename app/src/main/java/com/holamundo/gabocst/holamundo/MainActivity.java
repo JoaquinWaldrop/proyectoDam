@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.loopj.android.http.*;
 
 import org.apache.http.Header;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import static java.lang.Integer.parseInt;

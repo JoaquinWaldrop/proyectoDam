@@ -14,16 +14,25 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true">
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/busqueda"
+            android:hint="@string/busqueda"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="45dp">
 
         <ListView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="453dp"
             android:id="@+id/listProducts" />
     </LinearLayout>
+
+
 </RelativeLayout>

@@ -19,4 +19,6 @@
     <string name="radio">Hello world!</string>
     <string name="title_activity_client">BachApp</string>
     <string name="action_listar">Listar</string>
+    <string name="title_activity_product">Producto</string>
+    <string name="busqueda">Buscar...</string>
 </resources>

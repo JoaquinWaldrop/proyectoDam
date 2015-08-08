@@ -20,6 +20,7 @@
         android:layout_marginTop="82dp">
 
         <EditText
+            android:text="jose@gmail.com"
             android:hint="@string/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,6 +30,7 @@
             android:layout_gravity="center_horizontal" />
 
         <EditText
+            android:text="123456"
             android:hint="@string/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
