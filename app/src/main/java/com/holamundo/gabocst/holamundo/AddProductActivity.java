@@ -6,31 +6,47 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.apache.http.Header;
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class AddProductActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button scanBtn;
-    private TextView formatTxt, contentTxt;
+    private TextView contentTxt;
+    String scanContent = null;
+    EditText et1, et2;
+    Button agregar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
+        et1 = (EditText)findViewById(R.id.et1);
+        et2 = (EditText)findViewById(R.id.et2);
+        agregar = (Button)findViewById(R.id.agregar);
         //Se Instancia el botón de Scan
         scanBtn = (Button)findViewById(R.id.scan_button);
-        //Se Instancia el Campo de Texto para el nombre del formato de código de barra
-        formatTxt = (TextView)findViewById(R.id.scan_format);
         //Se Instancia el Campo de Texto para el contenido  del código de barra
         contentTxt = (TextView)findViewById(R.id.scan_content);
         //Se agrega la clase MainActivity.java como Listener del evento click del botón de Scan
         scanBtn.setOnClickListener(this);
+        agregar.setOnClickListener(this);
     }
 
     @Override
@@ -42,6 +58,9 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             //Se procede con el proceso de scaneo
             scanIntegrator.initiateScan();
         }
+        else if(view.getId()==R.id.agregar){
+            Agregar();
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -50,17 +69,117 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         if (scanningResult != null) {
             //Quiere decir que se obtuvo resultado pro lo tanto:
             //Desplegamos en pantalla el contenido del código de barra scaneado
-            String scanContent = scanningResult.getContents();
-            contentTxt.setText("Contenido: " + scanContent);
-            //Desplegamos en pantalla el nombre del formato del código de barra scaneado
-            String scanFormat = scanningResult.getFormatName();
-            formatTxt.setText("Formato: " + scanFormat);
+            scanContent = scanningResult.getContents();
+
+            getProducto();
         }else{
             //Quiere decir que NO se obtuvo resultado
             Toast toast = Toast.makeText(getApplicationContext(),
                     "No se ha recibido datos del scaneo!", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    public void getProducto(){
+        AsyncHttpClient client = new AsyncHttpClient();
+        String url = "http://inworknet.net:8000/api/products";
+        client.get(url, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String resultado = new String(responseBody);
+                CargarLista(listar(resultado));
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(AddProductActivity.this, "Mal: " + error, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void CargarLista(ArrayList<String> datos){
+        if(datos.size()>0){
+            et1.setText(datos.get(0));
+            et2.setText(datos.get(1));
+            contentTxt.setText(datos.get(2));
+            AsyncHttpClient client = new AsyncHttpClient();
+            String url = "http://inworknet.net:8000/api/bachaqueros/me/products";
+            SessionSQL ss = new SessionSQL(this);
+            HashMap<String, String> paramMap = new HashMap<>(ss.getUserDetails());
+            client.addHeader("token", paramMap.get("token"));
+            RequestParams params = new RequestParams();
+            params.put("name",datos.get(0));
+            params.put("description",datos.get(1));
+            params.put("barcode",scanContent);
+            client.post(url, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                    Toast.makeText(AddProductActivity.this, "Producto Agregado", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    Toast.makeText(AddProductActivity.this, "No se pudo agregar el producto", Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+        else{
+            Toast.makeText(this, "No existe producto con el codigo de barra indicado", Toast.LENGTH_LONG).show();
+            contentTxt.setText(scanContent);
+            agregar.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public ArrayList<String> listar(String response){
+        ArrayList<String> listado = new ArrayList<>();
+        try{
+            JSONArray json = new JSONArray(response);
+            String texto;
+            for(int i=0; i<json.length(); i++){
+                texto = json.getJSONObject(i).getString("barcode");
+                if(texto.equals(scanContent)){
+                    listado.add(json.getJSONObject(i).getString("name"));
+                    listado.add(json.getJSONObject(i).getString("description"));
+                    listado.add(texto);
+                    break;
+                }
+
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return listado;
+    }
+
+    public void Agregar(){
+       // if(scanContent!=null && et1.getText().toString().length()!=0 && et2.getText().toString().length()!=0){
+            AsyncHttpClient client = new AsyncHttpClient();
+            String url = "http://inworknet.net:8000/api/bachaqueros/me/products";
+            SessionSQL ss = new SessionSQL(this);
+            HashMap<String, String> paramMap = new HashMap<>(ss.getUserDetails());
+        client.addHeader("token", paramMap.get("token"));
+            RequestParams params = new RequestParams();
+            params.put("name",et1.getText().toString());
+            params.put("description",et2.getText().toString());
+            params.put("barcode",scanContent);
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Toast.makeText(AddProductActivity.this, "Producto Agregado", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Toast.makeText(AddProductActivity.this, "No se pudo agregar el producto: " + statusCode, Toast.LENGTH_LONG).show();
+                }
+            });
+
+       /* }
+        else{
+            Toast.makeText(this, "Proporcione un nombre, una descripcion y un codigo de barra", Toast.LENGTH_LONG).show();
+        }*/
     }
 
     @Override
