@@ -2,7 +2,7 @@
     <string name="app_name">BachApp</string>
 
     <string name="bachApp">BachApp</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Configuraciones</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="signup">Sign Up</string>
@@ -28,5 +28,9 @@
     <string name="new_password">New Password</string>
     <string name="confirmation">Repeat new password</string>
     <string name="guardar">Guardar cambios</string>
-
+    <string name="title_activity_bacha_product">BachaProductActivity</string>
+    <string name="title_activity_add_product">Agregar Producto</string>
+    <string name="scan">Scanear Producto</string>
+    <string name="nombre">Nombre</string>
+    <string name="descripcion">Descripcion</string>
 </resources>

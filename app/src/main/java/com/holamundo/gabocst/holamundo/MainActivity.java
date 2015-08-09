@@ -1,7 +1,6 @@
 package com.holamundo.gabocst.holamundo;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -102,18 +101,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void sqlSesion(String resultado){
         try {
             JSONObject json = new JSONObject(resultado);
-            int user = parseInt(json.get("user").toString());
             int userType = parseInt(json.get("userType").toString());
             String token = json.get("token").toString();
 
-            SessionSQL log = new SessionSQL(this, "MiDB",null, 1 );
-            SQLiteDatabase db = log.getWritableDatabase();
-            if(db!=null){
-            String sql = "INSERT INTO sesion(token, user, userType) values" +
-                    "( '" + token + " '," + user + ", " + userType +" ) ";
-                db.execSQL(sql);
-                db.close();
-            }
+            SessionSQL sm = new SessionSQL(this);
+            sm.createLoginSession(token, json.get("user").toString(), json.get("userType").toString());
+
             if(userType==0){
                 Intent intent = new Intent(this, ClientActivity.class);
                 startActivity(intent);
@@ -128,6 +121,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
     }
+
+
+
 
 
 }

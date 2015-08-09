@@ -83,6 +83,28 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.holamundo.gabocst.holamundo.ClientActivity" />
         </activity>
+        <activity
+            android:name=".BachaProductActivity"
+            android:label="@string/title_activity_bacha_product"
+            android:parentActivityName=".DashboardActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.holamundo.gabocst.holamundo.DashboardActivity" />
+        </activity>
+        <activity
+            android:name=".AddProductActivity"
+            android:label="@string/title_activity_add_product"
+            android:parentActivityName=".DashboardActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.holamundo.gabocst.holamundo.DashboardActivity" />
+        </activity>
+
+        <service
+            android:name=".Services.LocationService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

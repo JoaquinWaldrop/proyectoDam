@@ -6,11 +6,23 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.holamundo.gabocst.holamundo.DashboardActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <EditText
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/text"
-        android:text="@string/bachaquero"/>
+        android:id="@+id/busqueda"
+        android:hint="@string/busqueda"
+        android:maxLines="1"
+        android:inputType="textFilter"
+        android:visibility="invisible"
+        android:singleLine="true"
+        android:importantForAccessibility="no" />
 
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="453dp"
+        android:id="@+id/listProducts"
+        android:layout_below="@+id/busqueda"
+        />
 </RelativeLayout>
