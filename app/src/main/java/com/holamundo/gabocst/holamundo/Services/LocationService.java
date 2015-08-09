@@ -10,66 +10,29 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
 
-public class LocationService extends Service implements LocationListener{
+public class LocationService extends Service{
 
-    private final Context ctx;
-    double latitud, longitud;
-    Location location;
-    boolean gpsActivo;
-    LocationManager locationManager;
-
-    public LocationService() {
-        super();
-        this.ctx = this.getApplicationContext();
-    }
-    public LocationService(Context c){
-        super();
-        this.ctx = c;
-        getLocation();
+    @Override
+    public void onCreate() {
+        super.onCreate();
     }
 
-    public void mostrar(Context x){
-        Toast.makeText(x, "Coordenadas: "+latitud+", "+longitud, Toast.LENGTH_LONG).show();
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Toast.makeText(this, "Comenzo..", Toast.LENGTH_LONG).show();
+        return START_STICKY;
     }
 
-    public void getLocation(){
-        try{
-            locationManager = (LocationManager)this.ctx.getSystemService(LOCATION_SERVICE);
-            gpsActivo = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        if(gpsActivo){
-            locationManager.requestLocationUpdates(locationManager.GPS_PROVIDER, 1000*30, 10, this);
-            location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
-            latitud = location.getLatitude();
-            longitud = location.getLongitude();
-
-        }
+    @Override
+    public void onDestroy() {
+        //super.onDestroy();
+        Toast.makeText(this, "Termino..", Toast.LENGTH_LONG).show();
     }
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 }

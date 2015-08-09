@@ -30,21 +30,8 @@
         android:layout_alignStart="@+id/et1"
         android:maxLines="3" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scan_format"
-        android:layout_below="@+id/et2"
-        android:layout_marginTop="40dp"
-        android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scan_content"
-        android:layout_marginTop="40dp"
-        android:layout_below="@+id/scan_format"
-        android:layout_centerHorizontal="true" />
+    
 
     <Button
         android:layout_width="wrap_content"
@@ -53,8 +40,6 @@
         android:id="@+id/scan_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="400dp" />
-
-
 
 
 </RelativeLayout>

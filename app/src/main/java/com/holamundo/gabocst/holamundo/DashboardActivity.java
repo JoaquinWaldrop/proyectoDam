@@ -68,32 +68,32 @@ public class DashboardActivity extends AppCompatActivity {
 
         getLista();
 
-       /* LocationService myService = new LocationService(DashboardActivity.this);
-        myService.mostrar(this);*/
+       // LocationService myService = new LocationService(DashboardActivity.this);
+        //myService.mostrar(this);
 
     }
+
 
     public void getLista(){
         SessionSQL ss = new SessionSQL(this);
-        HashMap<String, String> id = new HashMap<>(ss.getUser());
-        //HashMap<String, String> paramMap = new HashMap<>(ss.getUserDetails());
-        //RequestParams params = new RequestParams(paramMap);
+        HashMap<String, String> paramMap = new HashMap<>(ss.getUserDetails());
         AsyncHttpClient client = new AsyncHttpClient();
-        String url = "http://inworknet.net:8000/api/bachaqueros/"+id.get("user")+"/products";
-        //String url = "http://inworknet.net:8000/api/bachaqueros/me/products";
-        client.get(url, /*params,*/ new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String resultado = new String(responseBody);
-                CargarLista(listar(resultado));
-            }
+        String url = "http://inworknet.net:8000/api/bachaqueros/me/products";
+        client.addHeader("token", paramMap.get("token"));
+        client.get(url, new AsyncHttpResponseHandler() {
+        @Override
+        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            String resultado = new String(responseBody);
+            CargarLista(listar(resultado));
+        }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(DashboardActivity.this, "Mal: " + statusCode, Toast.LENGTH_SHORT).show();
+        @Override
+        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+            Toast.makeText(DashboardActivity.this, "Mal: " + statusCode, Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     public void CargarLista(ArrayList<String> datos){
         if(datos.size()>0) {

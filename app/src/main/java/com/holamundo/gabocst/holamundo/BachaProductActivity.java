@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.holamundo.gabocst.holamundo.Services.LocationService;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -30,6 +32,17 @@ public class BachaProductActivity extends AppCompatActivity {
             String id = bundle.get("id").toString();
             getProduct(id);
         }
+    }
+
+    public void starService(View v){
+        Intent i = new Intent(this, LocationService.class);
+        startService(i);
+
+    }
+
+    public void stopService(View v){
+        Intent i = new Intent(this, LocationService.class);
+        stopService(i);
     }
 
     public void getProduct(String id){

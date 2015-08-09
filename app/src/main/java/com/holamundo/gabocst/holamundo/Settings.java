@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.loopj.android.http.*;
 
 import org.apache.http.Header;
+import org.apache.http.HeaderElement;
+import org.apache.http.ParseException;
 
 import java.util.HashMap;
 
@@ -74,15 +76,14 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
 
         SessionSQL ss = new SessionSQL(this);
 
-        //HashMap<String, String> paramMap = new HashMap<>(ss.getUserDetails());
+        HashMap<String, String> paramMap = new HashMap<>(ss.getUserDetails());
         HashMap<String, String> id = new HashMap<>(ss.getUser());
-        //RequestParams params = new RequestParams(paramMap);
-
-        //Toast.makeText(Settings.this,id.get("user"), Toast.LENGTH_LONG).show();
 
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "http://inworknet.net:8000/api/users/"+id.get("user");
-        client.put(url, new AsyncHttpResponseHandler() {
+        client.addHeader("token", paramMap.get("token"));
+
+        client.put(url,new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(Settings.this, statusCode, Toast.LENGTH_LONG).show();
@@ -96,4 +97,6 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
 
 
     }
+
+
 }
