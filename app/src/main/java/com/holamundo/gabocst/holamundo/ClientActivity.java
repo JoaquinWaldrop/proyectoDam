@@ -28,6 +28,7 @@ import org.json.JSONArray;
 public class ClientActivity extends AppCompatActivity {
     ListView lista;
     ArrayList<Integer> rows = new ArrayList<>();
+    ArrayList<Integer> rows2 = new ArrayList<>();
     EditText busqueda;
     ArrayAdapter<String> adapter;
 
@@ -44,8 +45,10 @@ public class ClientActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String s = rows.get(position).toString();
+                String s2 = rows2.get(position).toString();
                 Intent intent = new Intent(ClientActivity.this, ProductActivity.class);
                 intent.putExtra("id", s);
+                intent.putExtra("owner", s2);
                 startActivity(intent);
             }
         });
@@ -83,7 +86,34 @@ public class ClientActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(ClientActivity.this, "Mal: " + error, Toast.LENGTH_SHORT).show();
+                if(statusCode>=400 && statusCode<500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ClientActivity.this);
+                    builder1.setTitle("Imposible");
+                    builder1.setMessage("No se encontro la peticion");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+                else if(statusCode>=500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(ClientActivity.this);
+                    builder1.setTitle("Ups!");
+                    builder1.setMessage("Problemas con el servidor... Intente mas tarde");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
             }
         });
     }
@@ -102,6 +132,7 @@ public class ClientActivity extends AppCompatActivity {
                 texto = json.getJSONObject(i).getString("name");
                 listado.add(texto);
                 rows.add(json.getJSONObject(i).getInt("id"));
+                rows2.add(json.getJSONObject(i).getInt("owner"));
             }
 
         }catch (Exception e){
@@ -141,7 +172,7 @@ public class ClientActivity extends AppCompatActivity {
 
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("Cerrar Sesión");
-            dialogo1.setMessage("¿ Está seguro que desea cerrar sesión ?");
+            dialogo1.setMessage("¿Está seguro que desea cerrar sesión?");
             dialogo1.setCancelable(false);
             dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {

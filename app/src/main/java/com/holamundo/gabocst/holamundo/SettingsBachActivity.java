@@ -2,8 +2,6 @@ package com.holamundo.gabocst.holamundo;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,15 +11,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.loopj.android.http.*;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.apache.http.Header;
-import org.apache.http.HeaderElement;
-import org.apache.http.ParseException;
 
 import java.util.HashMap;
 
-public class Settings extends AppCompatActivity implements View.OnClickListener{
+public class SettingsBachActivity extends AppCompatActivity implements View.OnClickListener{
 
     EditText et1, et2;
     Button btn;
@@ -62,7 +61,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
             dialogo1.setCancelable(false);
             dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {
-                    final SessionSQL sm = new SessionSQL(Settings.this);
+                    final SessionSQL sm = new SessionSQL(SettingsBachActivity.this);
                     AsyncHttpClient client = new AsyncHttpClient();
                     String url = "http://inworknet.net:8000/api/sessions";
                     HashMap<String, String> paramMap = new HashMap<>(sm.getUserDetails());
@@ -76,7 +75,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
 
                         @Override
                         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                            Toast.makeText(Settings.this, "No se pudo cerrar sesion: "+ statusCode, Toast.LENGTH_LONG).show();
+                            Toast.makeText(SettingsBachActivity.this, "No se pudo cerrar sesion: " + statusCode, Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -100,7 +99,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
                 putDatos();
             }
             else{
-                Toast.makeText(Settings.this, "Introduzca dos contraseñas iguales", Toast.LENGTH_LONG).show();
+                Toast.makeText(SettingsBachActivity.this, "Introduzca dos contraseñas iguales", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -119,8 +118,8 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
         client.put(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Toast.makeText(Settings.this, "Clave cambiada con exito" , Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Settings.this, ClientActivity.class);
+                Toast.makeText(SettingsBachActivity.this, "Clave cambiada con exito" , Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SettingsBachActivity.this, DashboardActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -129,7 +128,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                 if(statusCode>=400 && statusCode<500){
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Settings.this);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(SettingsBachActivity.this);
                     builder1.setTitle("Datos invalidos");
                     builder1.setMessage("Por favor ingrese los datos correctamente");
                     builder1.setCancelable(true);
@@ -143,7 +142,7 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
                     alert11.show();
                 }
                 else if(statusCode>=500){
-                    AlertDialog.Builder builder1 = new AlertDialog.Builder(Settings.this);
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(SettingsBachActivity.this);
                     builder1.setTitle("Ups!");
                     builder1.setMessage("Problemas con el servidor... Intente mas tarde");
                     builder1.setCancelable(true);

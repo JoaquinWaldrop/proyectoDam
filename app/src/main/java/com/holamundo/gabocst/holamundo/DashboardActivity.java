@@ -91,8 +91,35 @@ public class DashboardActivity extends AppCompatActivity {
 
         @Override
         public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-            Toast.makeText(DashboardActivity.this, "Mal: " + statusCode, Toast.LENGTH_SHORT).show();
+            if(statusCode>=400 && statusCode<500){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(DashboardActivity.this);
+                builder1.setTitle("Imposible");
+                builder1.setMessage("No se encontro la peticion");
+                builder1.setCancelable(true);
+                builder1.setNeutralButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
+            else if(statusCode>=500){
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(DashboardActivity.this);
+                builder1.setTitle("Ups!");
+                builder1.setMessage("Problemas con el servidor... Intente mas tarde");
+                builder1.setCancelable(true);
+                builder1.setNeutralButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
+        }
         });
     }
 
@@ -140,7 +167,8 @@ public class DashboardActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent s = new Intent(DashboardActivity.this, SettingsBachActivity.class);
+            startActivity(s);
         }
         if (id == R.id.action_agregar) {
             Intent i = new Intent(this, AddProductActivity.class);
@@ -151,7 +179,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("Cerrar Sesión");
-            dialogo1.setMessage("¿ Está seguro que desea cerrar sesión ?");
+            dialogo1.setMessage("¿Está seguro que desea cerrar sesión?");
             dialogo1.setCancelable(false);
             dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {

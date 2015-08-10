@@ -1,5 +1,8 @@
 package com.holamundo.gabocst.holamundo;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -91,12 +94,43 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
                     String resultado= new String(responseBody);
-                    Toast.makeText(SignupActivity.this, "Todo OK: " + resultado, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "Registro Exitoso", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
 
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(SignupActivity.this, "Mal: " + error, Toast.LENGTH_SHORT).show();
+                if(statusCode>=400 && statusCode<500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(SignupActivity.this);
+                    builder1.setTitle("Registro fallido");
+                    builder1.setMessage("Datos incorrectos o imcompletos");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+                else if(statusCode>=500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(SignupActivity.this);
+                    builder1.setTitle("Registro fallido");
+                    builder1.setMessage("Problemas con el servidor... Intente mas tarde");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
             }
         });
     }

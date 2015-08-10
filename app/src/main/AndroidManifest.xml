@@ -85,7 +85,7 @@
         </activity>
         <activity
             android:name=".BachaProductActivity"
-            android:label="@string/title_activity_bacha_product"
+            android:label="@string/title_activity_product"
             android:parentActivityName=".DashboardActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -113,6 +113,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.holamundo.gabocst.holamundo.BachaProductActivity" />
+        </activity>
+        <activity
+            android:name=".SettingsBachActivity"
+            android:label="@string/title_activity_settings_bach"
+            android:parentActivityName=".DashboardActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.holamundo.gabocst.holamundo.DashboardActivity" />
         </activity>
     </application>
 

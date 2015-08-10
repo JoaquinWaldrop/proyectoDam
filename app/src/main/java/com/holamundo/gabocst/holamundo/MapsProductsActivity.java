@@ -1,11 +1,16 @@
 package com.holamundo.gabocst.holamundo;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.*;
@@ -65,6 +70,16 @@ public class MapsProductsActivity extends FragmentActivity {
             if (mMap != null) {
                 mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                 mMap.setMyLocationEnabled(true);
+               /* double la = mMap.getMyLocation().getLatitude();
+                double lo = mMap.getMyLocation().getLongitude();*/
+                LatLng ccs = new LatLng(8.2366429, -66.6036842);
+                CameraPosition camPos = new CameraPosition.Builder()
+                        .target(ccs)
+                        .zoom(7)
+                        .build();
+
+                CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
+                mMap.animateCamera(camUpd3);
                 getLocations();
 
             }
@@ -88,7 +103,34 @@ public class MapsProductsActivity extends FragmentActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(MapsProductsActivity.this, "Mal: " + statusCode, Toast.LENGTH_SHORT).show();
+                if(statusCode>=400 && statusCode<500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MapsProductsActivity.this);
+                    builder1.setTitle("Imposible");
+                    builder1.setMessage("No se encontro la peticion");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+                else if(statusCode>=500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MapsProductsActivity.this);
+                    builder1.setTitle("Ups!");
+                    builder1.setMessage("Problemas con el servidor... No pudieron cargarse los marcadores");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
             }
         });
     }
@@ -99,7 +141,7 @@ public class MapsProductsActivity extends FragmentActivity {
             JSONArray json = new JSONArray(response);
             String texto, texto2;
             for(int i=0; i<json.length(); i++){
-                if(json.getJSONObject(i).length()>5) {
+                if(json.getJSONObject(i).length()>5 && json.getJSONObject(i).getInt("type")==1) {
                     texto = json.getJSONObject(i).getString("lastLatitude");
                     texto2 = json.getJSONObject(i).getString("lastLongitude");
                     latitude.add(texto);

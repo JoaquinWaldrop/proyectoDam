@@ -116,17 +116,48 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             client.post(url, params, new AsyncHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                    Toast.makeText(AddProductActivity.this, "Producto Agregado", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddProductActivity.this, et1.getText().toString()+" agregado exitosamente!", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(AddProductActivity.this, DashboardActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                    Toast.makeText(AddProductActivity.this, "No se pudo agregar el producto", Toast.LENGTH_LONG).show();
+                    if(statusCode>=400 && statusCode<500){
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProductActivity.this);
+                        builder1.setTitle("Imposible");
+                        builder1.setMessage("No se encontro la peticion");
+                        builder1.setCancelable(true);
+                        builder1.setNeutralButton(android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
+                    else if(statusCode>=500){
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProductActivity.this);
+                        builder1.setTitle("Ups!");
+                        builder1.setMessage("Problemas con el servidor... Intente mas tarde");
+                        builder1.setCancelable(true);
+                        builder1.setNeutralButton(android.R.string.ok,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
                 }
             });
 
         }
-        else{
+        else if(scanContent.length()>0){
             Toast.makeText(this, "No existe producto con el codigo de barra indicado", Toast.LENGTH_LONG).show();
             contentTxt.setText(scanContent);
             agregar.setVisibility(View.VISIBLE);
@@ -169,13 +200,45 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Toast.makeText(AddProductActivity.this, "Producto Agregado", Toast.LENGTH_LONG).show();
+                Toast.makeText(AddProductActivity.this, et1.getText().toString()+" agregado exitosamente!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(AddProductActivity.this, DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Toast.makeText(AddProductActivity.this, "No se pudo agregar el producto: " + statusCode, Toast.LENGTH_LONG).show();
+                if(statusCode>=400 && statusCode<500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProductActivity.this);
+                    builder1.setTitle("Imposible");
+                    builder1.setMessage("No se encontro la peticion");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
                 }
+                else if(statusCode>=500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddProductActivity.this);
+                    builder1.setTitle("Ups!");
+                    builder1.setMessage("Problemas con el servidor... Intente mas tarde");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+            }
             });
 
         }
@@ -200,14 +263,15 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent s = new Intent(AddProductActivity.this, SettingsBachActivity.class);
+            startActivity(s);
         }
         if (id == R.id.action_logout)
         {
 
             AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
             dialogo1.setTitle("Cerrar Sesión");
-            dialogo1.setMessage("¿ Está seguro que desea cerrar sesión ?");
+            dialogo1.setMessage("¿Está seguro que desea cerrar sesión?");
             dialogo1.setCancelable(false);
             dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialogo1, int id) {

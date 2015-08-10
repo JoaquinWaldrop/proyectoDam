@@ -36,4 +36,8 @@
     <string name="eliminar">Eliminar</string>
     <string name="title_activity_edit_product">Editar Producto</string>
     <string name="action_logout">Logout</string>
+    <string name="otros">Otros productos del bachaquero</string>
+    <string name="title_activity_settings_bach">Configuraciones</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

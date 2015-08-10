@@ -1,6 +1,8 @@
 package com.holamundo.gabocst.holamundo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -110,10 +112,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 sqlSesion(resultado);
 
             }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                String resultado= new String(responseBody);
-                Toast.makeText(MainActivity.this, "Mal: " + resultado, Toast.LENGTH_SHORT).show();
+                if(statusCode>=400 && statusCode<500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                    builder1.setTitle("Inicio de sesion fallido");
+                    builder1.setMessage("Datos de autenticacion incorrectos");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+                else if(statusCode>=500){
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(MainActivity.this);
+                    builder1.setTitle("Inicio de sesion fallido");
+                    builder1.setMessage("Problemas con el servidor... Intente mas tarde");
+                    builder1.setCancelable(true);
+                    builder1.setNeutralButton(android.R.string.ok,
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+
             }
         });
     }
