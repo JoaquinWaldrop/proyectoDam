@@ -1,17 +1,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.holamundo.gabocst.holamundo.ClientActivity">
+    tools:context="com.holamundo.gabocst.holamundo.EditProductActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
-
-    <item android:id="@+id/action_search" android:title="@string/action_search"
-        android:orderInCategory="100" app:showAsAction="never" />
-
-    <item android:id="@+id/action_map" android:title="@string/action_map"
         android:orderInCategory="100" app:showAsAction="never" />
 
     <item android:id="@+id/action_logout" android:title="@string/action_logout"
         android:orderInCategory="200" app:showAsAction="never" />
-
 </menu>

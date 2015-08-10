@@ -1,6 +1,8 @@
 package com.holamundo.gabocst.holamundo;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -154,7 +156,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void Agregar(){
-       // if(scanContent!=null && et1.getText().toString().length()!=0 && et2.getText().toString().length()!=0){
+        if(scanContent!=null && et1.getText().toString().length()!=0 && et2.getText().toString().length()!=0){
             AsyncHttpClient client = new AsyncHttpClient();
             String url = "http://inworknet.net:8000/api/bachaqueros/me/products";
             SessionSQL ss = new SessionSQL(this);
@@ -176,10 +178,10 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
                 }
             });
 
-       /* }
+        }
         else{
             Toast.makeText(this, "Proporcione un nombre, una descripcion y un codigo de barra", Toast.LENGTH_LONG).show();
-        }*/
+        }
     }
 
     @Override
@@ -199,6 +201,40 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+        if (id == R.id.action_logout)
+        {
+
+            AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+            dialogo1.setTitle("Cerrar Sesión");
+            dialogo1.setMessage("¿ Está seguro que desea cerrar sesión ?");
+            dialogo1.setCancelable(false);
+            dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                    final SessionSQL sm = new SessionSQL(AddProductActivity.this);
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    String url = "http://inworknet.net:8000/api/sessions";
+                    HashMap<String, String> paramMap = new HashMap<>(sm.getUserDetails());
+                    client.addHeader("token", paramMap.get("token"));
+                    client.delete(url, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            sm.logoutUser();
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(AddProductActivity.this, "No se pudo cerrar sesion: "+ statusCode, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+            dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                }
+            });
+            dialogo1.show();
         }
 
         return super.onOptionsItemSelected(item);

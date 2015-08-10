@@ -78,6 +78,12 @@ public class SessionSQL {
 
         return user;
     }
+    public HashMap<String, String> getType(){
+        HashMap<String, String> user = new HashMap<>();
+        user.put(KEY_USERTYPE, pref.getString(KEY_USERTYPE, null));
+
+        return user;
+    }
 
 
     public void logoutUser(){

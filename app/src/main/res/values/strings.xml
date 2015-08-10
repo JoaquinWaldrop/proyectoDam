@@ -15,8 +15,6 @@
     <string name="registrar">Registrar</string>
     <string name="title_activity_dashboard">Inicio</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="radio">Hello world!</string>
     <string name="title_activity_client">BachApp</string>
     <string name="action_listar">Listar</string>
     <string name="title_activity_product">Producto</string>
@@ -34,4 +32,8 @@
     <string name="nombre">Nombre</string>
     <string name="descripcion">Descripcion</string>
     <string name="agregar">Agregar</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="title_activity_edit_product">Editar Producto</string>
+    <string name="action_logout">Logout</string>
 </resources>

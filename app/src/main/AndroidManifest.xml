@@ -105,6 +105,15 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
+        <activity
+            android:name=".EditProductActivity"
+            android:label="@string/title_activity_edit_product"
+            android:parentActivityName=".BachaProductActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.holamundo.gabocst.holamundo.BachaProductActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -16,6 +16,8 @@ import com.loopj.android.http.*;
 import org.apache.http.Header;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
@@ -29,6 +31,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SessionSQL sm = new SessionSQL(this);
+        if(sm.isLoggedIn()){
+            HashMap<String, String> paramMap = new HashMap<>(sm.getType());
+            if(paramMap.get("userType").equals("0")){
+                Intent intent = new Intent(this, ClientActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(this, DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        }
+
 
 
         email = (EditText) findViewById(R.id.email);
@@ -109,10 +129,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             if(userType==0){
                 Intent intent = new Intent(this, ClientActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
             else{
                 Intent intent = new Intent(this, DashboardActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
 

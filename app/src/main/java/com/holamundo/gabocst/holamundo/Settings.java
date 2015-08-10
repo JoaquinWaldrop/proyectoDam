@@ -1,7 +1,9 @@
 package com.holamundo.gabocst.holamundo;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -54,6 +56,40 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.action_logout)
+        {
+
+            AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+            dialogo1.setTitle("Cerrar Sesión");
+            dialogo1.setMessage("¿ Está seguro que desea cerrar sesión ?");
+            dialogo1.setCancelable(false);
+            dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                    final SessionSQL sm = new SessionSQL(Settings.this);
+                    AsyncHttpClient client = new AsyncHttpClient();
+                    String url = "http://inworknet.net:8000/api/sessions";
+                    HashMap<String, String> paramMap = new HashMap<>(sm.getUserDetails());
+                    client.addHeader("token", paramMap.get("token"));
+                    client.delete(url, new AsyncHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            sm.logoutUser();
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            Toast.makeText(Settings.this, "No se pudo cerrar sesion: "+ statusCode, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+            dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogo1, int id) {
+                }
+            });
+            dialogo1.show();
+        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -82,8 +118,10 @@ public class Settings extends AppCompatActivity implements View.OnClickListener{
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "http://inworknet.net:8000/api/users/"+id.get("user");
         client.addHeader("token", paramMap.get("token"));
+        RequestParams params = new RequestParams();
+        params.put("password",et1.getText().toString());
 
-        client.put(url,new AsyncHttpResponseHandler() {
+        client.put(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Toast.makeText(Settings.this, statusCode, Toast.LENGTH_LONG).show();
