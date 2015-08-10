@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.holamundo.gabocst.holamundo.EditProductActivity">
+    tools:context="com.holamundo.gabocst.holamundo.EditProductActivity"
+    android:background="#1fb1f4">
 
     <EditText
         android:layout_width="wrap_content"
@@ -11,7 +12,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:hint="@string/nombre"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF" />
 
 
     <EditText
@@ -25,7 +28,9 @@
         android:maxLines="3"
         android:layout_below="@+id/et1"
         android:layout_alignLeft="@+id/et1"
-        android:layout_alignStart="@+id/et1" />
+        android:layout_alignStart="@+id/et1"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF" />
 
     <Button
         android:layout_width="wrap_content"
